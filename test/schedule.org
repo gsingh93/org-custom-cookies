@@ -1,4 +1,4 @@
-* Heading [S:]
+* Schedule Test [S:]
 ** Scheduled Item
 SCHEDULED: <2021-11-10 Wed 10:00-11:00>
 ** Scheduled Item No Time
@@ -8,3 +8,50 @@ SCHEDULED: <2021-11-10 Wed 12:30-13:15>
 *** Subheading
 **** Scheduled Item 3
 SCHEDULED: <2021-11-10 Wed 14:00-14:07>
+* Effort Test [E:]
+** Item
+:PROPERTIES:
+:Effort:   30
+:END:
+* Clock Time Test [C:]
+** Item
+:LOGBOOK:
+CLOCK: [2021-11-11 Thu 12:20]--[2021-11-11 Thu 12:56] =>  0:36
+:END:
+* Multiple Cookie Test [S:] [E:] [C:]
+** Scheduled Item
+SCHEDULED: <2021-11-11 Thu 10:00-11:00>
+** Scheduled Item with Effort
+SCHEDULED: <2021-11-11 Thu 10:00-11:00>
+:PROPERTIES:
+:Effort:   30
+:END:
+** Item with Effort and Clock Time
+:PROPERTIES:
+:Effort:   45
+:END:
+:LOGBOOK:
+CLOCK: [2021-11-11 Thu 12:20]--[2021-11-11 Thu 12:56] =>  0:36
+:END:
+* Nearest Heading Test
+** Item 1 [E:]
+*** Item 2
+:PROPERTIES:
+:Effort:   30
+:END:
+**** Item 3 [E:]
+***** Item 4
+:PROPERTIES:
+:Effort:   30
+:END:
+* Containing Subtree Test
+** Item 1 [S:]
+*** Item 2
+SCHEDULED: <2021-11-10 Wed 14:00-14:07>
+** Item 3
+*** Item 4 [E:]
+**** Item 5
+:PROPERTIES:
+:Effort:   25
+:END:
+Foo
