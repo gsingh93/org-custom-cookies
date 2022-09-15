@@ -211,20 +211,19 @@ cookies in the buffer."
   (if all
       (org-custom-cookies-update-all)
     (cl-loop for (regex . callback) in org-custom-cookies-alist
-             do (let* ((outline-path (org-get-outline-path t))
-                       ;; Search for the first heading in this subtree that
-                       ;; matches the regex
-                       (heading-index
-                        (cl-position regex outline-path :test 'string-match)))
-                  (when heading-index
-                    (save-excursion
-                      ;; Go to that heading
-                      (outline-up-heading
-                       (- (length outline-path) heading-index)
-                       t)
-                      ;; Update that subtree
-                      (org-map-entries
-                       'org-custom-cookies--update-all-cookies-current-heading t 'tree)))))))
+             do (when-let ((outline-path (org-get-outline-path t))
+                           ;; Search for the first heading in this subtree that
+                           ;; matches the regex
+                           (heading-index
+                            (cl-position regex outline-path :test 'string-match))
+                           (dist (- (length outline-path) (+ 1 heading-index))))
+                  (save-excursion
+                    (unless (zerop dist)
+                      ;; Go to that heading if we're not already there
+                      (outline-up-heading dist t))
+                    ;; Update that subtree
+                    (org-map-entries
+                     'org-custom-cookies--update-all-cookies-current-heading t 'tree))))))
 
 ;;;###autoload
 (defun org-custom-cookies-update-all ()
