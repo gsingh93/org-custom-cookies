@@ -1,0 +1,15 @@
+* Multiple Cookie Test [S: 2:00] [E: 1:15] [C: 0:36]
+** Scheduled Item
+SCHEDULED: <2021-11-11 Thu 10:00-11:00>
+** Scheduled Item with Effort
+SCHEDULED: <2021-11-11 Thu 11:00-12:00>
+:PROPERTIES:
+:Effort:   30
+:END:
+** Item with Effort and Clock Time
+:PROPERTIES:
+:Effort:   45
+:END:
+:LOGBOOK:
+CLOCK: [2021-11-11 Thu 12:20]--[2021-11-11 Thu 12:56] =>  0:36
+:END:

@@ -1,0 +1,11 @@
+* Subtree Test
+** Item 1 [S: 0:07]
+*** Item 2
+SCHEDULED: <2021-11-10 Wed 14:00-14:07>
+** Item 3
+*** Item 4 [E:]
+**** Item 5
+:PROPERTIES:
+:Effort:   25
+:END:
+Foo

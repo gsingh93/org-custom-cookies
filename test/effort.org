@@ -1,0 +1,5 @@
+* Effort Test [E:]
+** Item
+:PROPERTIES:
+:Effort:   30
+:END:

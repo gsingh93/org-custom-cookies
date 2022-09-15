@@ -1,0 +1,5 @@
+* Clock Time Test [C:]
+** Item
+:LOGBOOK:
+CLOCK: [2021-11-11 Thu 12:20]--[2021-11-11 Thu 12:56] =>  0:36
+:END:
