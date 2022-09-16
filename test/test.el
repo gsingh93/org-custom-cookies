@@ -1,6 +1,4 @@
-;; TODO: Rename tests
-;; TODO: Move .org headings to different test files
-
+;;; test.el --- Tests for org-custom-cookies -*- lexical-binding: t -*-
 
 (defmacro ert-deftest-matches-expected-file (testname testfile &rest body)
   "TODO"

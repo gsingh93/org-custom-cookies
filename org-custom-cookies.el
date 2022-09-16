@@ -2,7 +2,7 @@
 
 ;; Author: Gulshan Singh <gsingh2011@gmail.com>
 ;; Version: 0.1
-;; Package-Requires: ((cl-lib "0.7"))
+;; Package-Requires: ((emacs "27.2"))
 ;; URL: https://github.com/gsingh93/org-custom-cookies
 
 ;; This file is free software; you can redistribute it and/or modify
@@ -27,9 +27,6 @@
 ;; total duration of scheduled time, clocked time, and effort in a subtree.
 
 ;;; Code:
-
-(eval-when-compile
-  (require 'cl-lib))
 
 (require 'org)
 
