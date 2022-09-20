@@ -22,7 +22,7 @@
 
 ;; Org mode supports the [/] and [%] statistics cookies by default
 ;; (https://orgmode.org/manual/Breaking-Down-Tasks.html), but does not allow you
-;; to add additional types of cookies. This package allows you to add your own
+;; to add additional types of cookies.  This package allows you to add your own
 ;; custom cookies and comes with implementations for cookies that calculate the
 ;; total duration of scheduled time, clocked time, and effort in a subtree.
 
@@ -34,16 +34,14 @@
   '(("\\[S: ?\\(?:[0-9]*:[0-9]*\\)?\\]" . org-custom-cookies--subtree-scheduled-duration-cookie)
     ("\\[C: ?\\(?:[0-9]*:[0-9]*\\)?\\]" . org-custom-cookies--subtree-clocksum-cookie)
     ("\\[E: ?\\(?:[0-9]*:[0-9]*\\)?\\]" . org-custom-cookies--subtree-effort-cookie))
-  "An association list of custom cookie regex and callback
-functions."
+  "Association list of custom cookie regex and callback functions."
   :type '(alist :key-type string :value-type function)
   :group 'org-custom-cookies)
 
 ;;;; Scheduled time custom cookie callback
 
 (defun org-custom-cookies--org-timestamp-string-to-duration-seconds (timestamp-string)
-  "Calculates the duration in seconds of the org timestamp in
-TIMESTAMP-STRING"
+  "Calculates the duration in seconds of the org timestamp in TIMESTAMP-STRING."
   (let* ((ts (org-timestamp-from-string timestamp-string))
          (start-time (org-timestamp-to-time ts nil))
          (end-time (org-timestamp-to-time ts t)))
@@ -54,16 +52,17 @@ TIMESTAMP-STRING"
       (time-subtract end-time start-time))))
 
 (defun org-custom-cookies--get-entry-scheduled-duration-seconds ()
-  "Returns the duration in seconds of the SCHEDULED property of
-an org entry. If the SCHEDULED property does not exist, or if the
-SCHEDULED property does not contain an end time, zero is
-returned."
+  "Return the duration in seconds of the SCHEDULED property of an org entry.
+
+If the SCHEDULED property does not exist, or if the SCHEDULED
+property does not contain an end time, zero is returned."
   (org-custom-cookies--org-timestamp-string-to-duration-seconds
    (org-entry-get nil "SCHEDULED")))
 
 (defun org-custom-cookies--calculate-subtree-scheduled-duration-minutes ()
-  "Calculates the total duration of all scheduled org entries in
-a subtree in minutes."
+  "Calculate the total duration of all scheduled org entries in a subtree.
+
+The result will be the total duration in minutes."
   (/
    (apply '+
           (org-map-entries
@@ -71,8 +70,9 @@ a subtree in minutes."
    60))
 
 (defun org-custom-cookies--subtree-scheduled-duration-cookie ()
-  "Returns the total duration of all scheduled entries in a
-  subtree as a cookie string."
+  "Return the total duration of all scheduled entries in a subtree.
+
+The result will be a string of the form '[S: <duration>]'."
   (format "[S: %s]"
           (org-duration-from-minutes
            (org-custom-cookies--calculate-subtree-scheduled-duration-minutes))))
@@ -80,7 +80,7 @@ a subtree in minutes."
 ;;;; Clocksum custom cookie callback
 
 (defun org-custom-cookies--subtree-clocksum-cookie ()
-  "Returns the clocksum of a subtree as a cookie string."
+  "Return the clocksum of a subtree as a cookie string."
   (progn
     ;; `org-clock-sum' computes the CLOCKSUM property of all headings in minutes
     ;; and stores it in the :org-clock-minutes property of the heading
@@ -92,7 +92,7 @@ a subtree in minutes."
 ;;;; Effort custom cookie callback
 
 (defun org-custom-cookies--get-effort-minutes ()
-  "Returns the effort of an org entry in minutes."
+  "Return the effort of an org entry in minutes."
   (org-duration-to-minutes (org-entry-get nil "Effort")))
 
 (defun org-custom-cookies--calculate-subtree-effort-minutes ()
@@ -101,16 +101,17 @@ a subtree in minutes."
              'org-custom-cookies--get-effort-minutes "+Effort<>\"\"" 'tree)))
 
 (defun org-custom-cookies--subtree-effort-cookie ()
-  "Returns the total effort of entries in a subtree as a cookie
-  string."
+  "Return the total effort of entries in a subtree as a cookie string."
   (format "[E: %s]" (org-duration-from-minutes
                      (org-custom-cookies--calculate-subtree-effort-minutes))))
 
 ;;;; Generic custom cookie code
 
 (defun org-custom-cookies--update-current-heading-cookie (regex callback)
-  "Replaces a cookie matching REGEX with the result of CALLBACK
-in the current heading, if it exists."
+  "Replace a cookie in the current heading.
+
+Cookies matching REGEX in the current heading, if any, will be
+replaced with the result of CALLBACK."
   (save-excursion
     ;; Move to the beginning of the heading or point-min if this is run before
     ;; any heading
@@ -135,10 +136,11 @@ in the current heading, if it exists."
         t))))
 
 (defun org-custom-cookies--update-nearest-heading-cookie (regex callback)
-  "Replaces a cookie matching REGEX with the result of
-CALLBACK. If a cookie matching REGEX cannot be found in the
-current heading, we go up a heading and try again until we reach
-the top-level heading."
+  "Replace a cookie matching REGEX with the result of CALLBACK.
+
+If a cookie matching REGEX cannot be found in the current
+heading, we go up a heading and try again until we reach the
+top-level heading."
   (save-excursion
     ;; Try to update the cookie at the current heading. If the regex doesn't
     ;; match, go to the parent heading so we can try again. If there is no
@@ -151,25 +153,23 @@ the top-level heading."
       (org-custom-cookies--update-nearest-heading-cookie regex callback))))
 
 (defun org-custom-cookies--update-all-cookies-nearest-heading ()
-  "Updates all custom cookies defined in
-`org-custom-cookies-alist' for the nearest parent heading
-containing the custom cookie."
+  "Update all custom cookies for the nearest parent heading containing the cookie."
   (cl-loop for (regex . callback) in org-custom-cookies-alist
            do (org-custom-cookies--update-nearest-heading-cookie regex callback)))
 
 (defun org-custom-cookies--update-all-cookies-current-heading ()
-  "Updates all custom cookies defined in
-`org-custom-cookies-alist' for the current heading if it contains
-the custom cookie."
+  "Update all custom cookies for the current heading."
   (cl-loop for (regex . callback) in org-custom-cookies-alist
            do (org-custom-cookies--update-current-heading-cookie regex callback)))
 
 ;;;###autoload
 (defun org-custom-cookies-update-nearest-heading (&optional all)
-  "Updates all custom cookies defined in
-`org-custom-cookies-alist' for the nearest parent heading
-containing the custom cookie. When called with a C-u prefix,
-update all custom cookies in the buffer."
+  "Update all custom cookies for the nearest parent heading containing the cookie.
+
+When called with a \\[universal-argument] prefix or with the
+optional argument ALL, update all custom cookies in the buffer.
+
+To customize the cookies, see `org-custom-cookies-alist'."
   (interactive "P")
   (if all
       (org-custom-cookies-update-all)
@@ -177,10 +177,12 @@ update all custom cookies in the buffer."
 
 ;;;###autoload
 (defun org-custom-cookies-update-current-heading (&optional all)
-  "Updates all custom cookies defined in
-`org-custom-cookies-alist' for the current heading if it contains
-the custom cookie. When called with a C-u prefix, update all
-custom cookies in the buffer."
+  "Update all custom cookies defined for the current heading.
+
+When called with a \\[universal-argument] prefix or with the
+optional argument ALL, update all custom cookies in the buffer.
+
+To customize the cookies, see `org-custom-cookies-alist'."
   (interactive "P")
   (if all
       (org-custom-cookies-update-all)
@@ -188,22 +190,32 @@ custom cookies in the buffer."
 
 ;;;###autoload
 (defun org-custom-cookies-update-subtree (&optional all)
-  "Updates all custom cookies defined in
-`org-custom-cookies-alist' for all headings in the current
-subtree. When called with a C-u prefix, update all custom cookies
-in the buffer."
+  "Update all custom cookies defined in the current subtree.
+
+Cookies in the current heading will also be updated, along with
+the cookies in all the child headings in the subtree.
+
+When called with a \\[universal-argument] prefix or with the
+optional argument ALL, update all custom cookies in the buffer.
+
+To customize the cookies, see `org-custom-cookies-alist'."
   (interactive "P")
   (if all
       (org-custom-cookies-update-all)
-    (org-map-entries 'org-custom-cookies--update-all-cookies-current-heading t 'tree)))
+    (org-map-entries
+     'org-custom-cookies--update-all-cookies-current-heading t 'tree)))
 
 ;;;###autoload
 (defun org-custom-cookies-update-containing-subtree (&optional all)
-  "Updates all custom cookies defined in
-`org-custom-cookies-alist' for all headings in the topmost
-subtree that contains the custom cookie and is a parent of the
-current heading. When called with a C-u prefix, update all custom
-cookies in the buffer."
+  "Update all custom cookies for all headings in the containing subtree.
+
+The containing subtree is the subtree starting with the first
+parent heading of the current heading that contains the cookie.
+
+When called with a \\[universal-argument] prefix or with the
+optional argument ALL, update all custom cookies in the buffer.
+
+To customize the cookies, see `org-custom-cookies-alist'."
   (interactive "P")
   (if all
       (org-custom-cookies-update-all)
@@ -224,8 +236,9 @@ cookies in the buffer."
 
 ;;;###autoload
 (defun org-custom-cookies-update-all ()
-  "Updates all custom cookies defined in
-`org-custom-cookies-alist' for all headings in the buffer"
+  "Update all custom cookies for all headings in the buffer.
+
+To customize the cookies, see `org-custom-cookies-alist'."
   (interactive)
   (org-map-entries 'org-custom-cookies--update-all-cookies-current-heading))
 
