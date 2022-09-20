@@ -5,7 +5,7 @@ A package that allows you to define custom `org-mode` [statistics cookies](https
 ## Installation
 
 `org-custom-cookies` is not yet on MELPA, so the current recommendation for installing is to use [quelpa-use-package](https://github.com/quelpa/quelpa-use-package):
-```
+```elisp
 (use-package org-custom-cookies
   :ensure t
   :quelpa (org-custom-cookies :repo "gsingh93/org-custom-cookies" :fetcher github))
@@ -60,7 +60,7 @@ It's recommended to play around with which one works best for your workflow (I p
 
 The `use-package` configuration below will bind `C-c #` in the `org-mode-map` (which originally would call `org-update-statistics-cookies`) to a function that will call both `(org-update-statistics-cookies all)` and `org-custom-cookies-update-containing-subtree`. It will also add hooks that will be run when you clock out, as well as when the "Effort" property is updated.
 
-```
+```elisp
 (use-package org-custom-cookies
   :ensure t
   :quelpa (org-custom-cookies :repo "gsingh93/org-custom-cookies" :fetcher github)
