@@ -118,7 +118,7 @@ replaced with the result of CALLBACK."
     (org-back-to-heading-or-point-min t)
     ;; Only attempt to update cookies if we're at a heading that matches the
     ;; cookie regex
-    (when (and (org-at-heading-p) (re-search-forward regex (point-at-eol) t))
+    (when (and (org-at-heading-p) (re-search-forward regex (line-end-position) t))
       ;; If we find a match, call callback function to get the new text of
       ;; the cookie. We need to save the match data so we can replace the
       ;; matched cookie after the callback returns, as the callback may
