@@ -1,6 +1,12 @@
 # org-custom-cookies
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![MELPA](https://melpa.org/packages/org-custom-cookies-badge.svg)](https://melpa.org/#/org-custom-cookies)
 
 A package that allows you to define custom `org-mode` [statistics cookies](https://orgmode.org/manual/Breaking-Down-Tasks.html).
+
+<p align="center">
+    <img width="720" height="484" src="./demo.gif">
+</p>
 
 ## Installation
 
