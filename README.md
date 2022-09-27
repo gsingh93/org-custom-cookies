@@ -10,11 +10,10 @@ A package that allows you to define custom `org-mode` [statistics cookies](https
 
 ## Installation
 
-`org-custom-cookies` is not yet on MELPA, so the current recommendation for installing is to use [quelpa-use-package](https://github.com/quelpa/quelpa-use-package):
+You can install from MELPA with `M-x package-install org-custom-cookies` or with [`use-package`](https://github.com/jwiegley/use-package):
 ```elisp
 (use-package org-custom-cookies
-  :ensure t
-  :quelpa (org-custom-cookies :repo "gsingh93/org-custom-cookies" :fetcher github))
+  :ensure t)
 ```
 
 Examples of adding bindings and hooks are given below.
@@ -69,7 +68,6 @@ The `use-package` configuration below will bind `C-c #` in the `org-mode-map` (w
 ```elisp
 (use-package org-custom-cookies
   :ensure t
-  :quelpa (org-custom-cookies :repo "gsingh93/org-custom-cookies" :fetcher github)
   :after org
   :bind (:map org-mode-map
               ("C-c #" . (lambda (all) (interactive "P")
