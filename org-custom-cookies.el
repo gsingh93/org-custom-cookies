@@ -2,7 +2,7 @@
 
 ;; Author: Gulshan Singh <gsingh2011@gmail.com>
 ;; Version: 0.1
-;; Package-Requires: ((emacs "27.2"))
+;; Package-Requires: ((emacs "25.1") (org "9.4"))
 ;; URL: https://github.com/gsingh93/org-custom-cookies
 
 ;; This file is free software; you can redistribute it and/or modify
