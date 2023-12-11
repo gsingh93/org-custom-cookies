@@ -172,6 +172,13 @@ Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
                       (org-custom-cookies--update-nearest-heading-cookie regex callback)
                       (cl-return 'updated-cookie)))))
 
+(defun org-custom-cookies--enable-cookie-face-for-all-custom-cookies ()
+  "Make sure all custom cookies look like the default cookies."
+  (cl-loop for (regex . callback) in org-custom-cookies-alist
+	   do (font-lock-add-keywords
+	       'org-mode
+	       `((,regex . 'org-checkbox-statistics-todo)))))
+
 ;;;###autoload
 (defun org-custom-cookies-update-nearest-heading (&optional all)
   "Update all custom cookies for the nearest parent heading containing the cookie.
