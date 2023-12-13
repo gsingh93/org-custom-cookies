@@ -179,6 +179,19 @@ Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
 	       'org-mode
 	       `((,regex . 'org-checkbox-statistics-todo)))))
 
+(defun org-custom-cookies--update-cookie-ctrl-c-ctrl-c ()
+"Update the custom cookie under the cursor using `org-ctrl-c-ctrl-c'.
+This will update any org custom cookie in the fashion as with default
+org cookies.
+
+Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
+  (catch 'updated-cookie
+    (cl-loop for (regex . callback) in org-custom-cookies-alist
+             do (if (org-in-regexp regex)
+                    (progn
+                      (org-custom-cookies--update-nearest-heading-cookie regex callback)
+                      (throw 'updated-cookie 1))))))
+
 ;;;###autoload
 (defun org-custom-cookies-update-nearest-heading (&optional all)
   "Update all custom cookies for the nearest parent heading containing the cookie.
