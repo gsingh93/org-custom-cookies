@@ -172,25 +172,14 @@ Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
                       (org-custom-cookies--update-nearest-heading-cookie regex callback)
                       (cl-return 'updated-cookie)))))
 
-(defun org-custom-cookies--enable-cookie-face-for-all-custom-cookies ()
-  "Make sure all custom cookies look like the default cookies."
+(defun org-custom-cookies--cookie-face-for-all-custom-cookies ()
+  "Apply org cookie face on custom-org-cookies.
+
+Hook this function to `org-font-lock-set-keywords-hook' for it work."
   (cl-loop for (regex . callback) in org-custom-cookies-alist
-	   do (font-lock-add-keywords
-	       'org-mode
-	       `((,regex . 'org-checkbox-statistics-todo)))))
-
-(defun org-custom-cookies--update-cookie-ctrl-c-ctrl-c ()
-"Update the custom cookie under the cursor using `org-ctrl-c-ctrl-c'.
-This will update any org custom cookie in the fashion as with default
-org cookies.
-
-Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
-  (catch 'updated-cookie
-    (cl-loop for (regex . callback) in org-custom-cookies-alist
-             do (if (org-in-regexp regex)
-                    (progn
-                      (org-custom-cookies--update-nearest-heading-cookie regex callback)
-                      (throw 'updated-cookie 1))))))
+	   do (setq org-font-lock-extra-keywords
+		    (append org-font-lock-extra-keywords
+			    `((,regex (0 'org-checkbox-statistics-todo prepend)))))))
 
 ;;;###autoload
 (defun org-custom-cookies-update-nearest-heading (&optional all)
