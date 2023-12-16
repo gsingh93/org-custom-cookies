@@ -162,12 +162,15 @@ top-level heading."
   (cl-loop for (regex . callback) in org-custom-cookies-alist
            do (org-custom-cookies--update-current-heading-cookie regex callback)))
 
-(defun org-custom-cookies--enable-cookie-face-for-all-custom-cookies ()
-  "Make sure all custom cookies look like the default cookies."
+(defun org-custom-cookies--cookie-face-for-all-custom-cookies ()
+  "Apply org cookie face on custom-org-cookies.
+
+Hook this function to `org-font-lock-set-keywords-hook' for it work."
   (cl-loop for (regex . callback) in org-custom-cookies-alist
-	   do (font-lock-add-keywords
-	       'org-mode
-	       `((,regex . 'org-checkbox-statistics-todo)))))
+	   do (setq org-font-lock-extra-keywords
+		    (append org-font-lock-extra-keywords
+			    `((,regex (0 'org-checkbox-statistics-todo prepend)))))))
+
 
 (defun org-custom-cookies--update-cookie-ctrl-c-ctrl-c ()
 "Update the custom cookie under the cursor using `org-ctrl-c-ctrl-c'.
