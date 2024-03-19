@@ -162,6 +162,16 @@ top-level heading."
   (cl-loop for (regex . callback) in org-custom-cookies-alist
            do (org-custom-cookies--update-current-heading-cookie regex callback)))
 
+(defun org-custom-cookies--cookie-face-for-all-custom-cookies ()
+  "Apply org cookie face on custom-org-cookies.
+
+Hook this function to `org-font-lock-set-keywords-hook' for it work."
+  (cl-loop for (regex . callback) in org-custom-cookies-alist
+           do (setq org-font-lock-extra-keywords
+                    (append org-font-lock-extra-keywords
+                            `((,regex (0 'org-checkbox-statistics-todo prepend)))))))
+
+
 ;;;###autoload
 (defun org-custom-cookies-update-nearest-heading (&optional all)
   "Update all custom cookies for the nearest parent heading containing the cookie.
