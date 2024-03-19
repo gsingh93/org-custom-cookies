@@ -64,7 +64,7 @@ It's recommended to play around with which one works best for your workflow (I p
 
 ### Keybindings and Hooks
 
-The `use-package` configuration below will `advise` `org-update-statistics-cookies` to run `org-custom-cookies-update-containing-subtree`, which will result in custom cookies being updated whenever built-in statistics cookie are updated, meaning that `C-c #` will also work with the custom cookies. It then enables `C-c C-c` for updating custom cookies. Finally, it adds hooks that will be run when you clock out, as well as when the "Effort" property is updated.
+The `use-package` configuration below will `advise` `org-update-statistics-cookies` to run `org-custom-cookies-update-containing-subtree`, which will result in custom cookies being updated whenever built-in statistics cookie are updated, meaning that `C-c #` will also work with the custom cookies. It then enables `C-c C-c` for updating custom cookies. Finally, it adds hooks that will be run when you clock out, as well as when the "Effort" property is updated. It will also make the org-custom-cookies use the default face for cookies.
 
 ```elisp
 (use-package org-custom-cookies
@@ -75,6 +75,7 @@ The `use-package` configuration below will `advise` `org-update-statistics-cooki
 	  'org-custom-cookies-update-containing-subtree)
   (add-hook 'org-ctrl-c-ctrl-c-hook 'org-custom-cookies--update-cookie-ctrl-c-ctrl-c)
   (add-hook 'org-clock-out-hook 'org-custom-cookies-update-containing-subtree)
+  (add-hook 'org-font-lock-set-keywords-hook 'org-custom-cookies--cookie-face-for-all-custom-cookies)
   (add-hook 'org-property-changed-functions
             (lambda(name value)
               (when (string-equal name "Effort")
