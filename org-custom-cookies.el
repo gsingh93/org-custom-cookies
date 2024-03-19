@@ -167,9 +167,9 @@ top-level heading."
 
 Hook this function to `org-font-lock-set-keywords-hook' for it work."
   (cl-loop for (regex . callback) in org-custom-cookies-alist
-	   do (setq org-font-lock-extra-keywords
-		    (append org-font-lock-extra-keywords
-			    `((,regex (0 'org-checkbox-statistics-todo prepend)))))))
+           do (setq org-font-lock-extra-keywords
+                    (append org-font-lock-extra-keywords
+                            `((,regex (0 'org-checkbox-statistics-todo prepend)))))))
 
 
 ;;;###autoload
