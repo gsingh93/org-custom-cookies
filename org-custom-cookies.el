@@ -168,12 +168,11 @@ This will update any org custom cookie in the fashion as with default
 org cookies.
 
 Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
-  (catch 'updated-cookie
     (cl-loop for (regex . callback) in org-custom-cookies-alist
              do (if (org-in-regexp regex)
                     (progn
                       (org-custom-cookies--update-nearest-heading-cookie regex callback)
-                      (throw 'updated-cookie 1))))))
+                      (cl-return 'updated-cookie)))))
 
 ;;;###autoload
 (defun org-custom-cookies-update-nearest-heading (&optional all)
