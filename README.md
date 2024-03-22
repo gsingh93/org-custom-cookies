@@ -63,17 +63,15 @@ It's recommended to play around with which one works best for your workflow (I p
 
 ### Keybindings and Hooks
 
-The `use-package` configuration below will bind `C-c #` in the `org-mode-map` (which originally would call `org-update-statistics-cookies`) to a function that will call both `(org-update-statistics-cookies all)` and `org-custom-cookies-update-containing-subtree`. It will also add hooks that will be run when you clock out, as well as when the "Effort" property is updated.
+The `use-package` configuration below will `advise` `org-update-statistics-cookies` to run `org-custom-cookies-update-containing-subtree`, which will result in custom cookies being updated whenever built-in statistics cookie are updated, meaning that `C-c #` will also work with the custom cookies. It will also add hooks that will be run when you clock out, as well as when the "Effort" property is updated.
 
 ```elisp
 (use-package org-custom-cookies
   :ensure t
   :after org
-  :bind (:map org-mode-map
-              ("C-c #" . (lambda (all) (interactive "P")
-                           (progn (org-update-statistics-cookies all)
-                                  (org-custom-cookies-update-containing-subtree)))))
   :config
+  (advice-add 'org-update-statistics-cookies :after 
+	  'org-custom-cookies-update-containing-subtree)
   (add-hook 'org-clock-out-hook 'org-custom-cookies-update-containing-subtree)
   (add-hook 'org-property-changed-functions
             (lambda(name value)
