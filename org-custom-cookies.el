@@ -163,9 +163,7 @@ top-level heading."
            do (org-custom-cookies--update-current-heading-cookie regex callback)))
 
 (defun org-custom-cookies--update-cookie-ctrl-c-ctrl-c ()
-"Update the custom cookie under the cursor using `org-ctrl-c-ctrl-c'.
-This will update any org custom cookie in the fashion as with default
-org cookies.
+  "Update the custom cookie under the cursor using `org-ctrl-c-ctrl-c'.
 
 Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
     (cl-loop for (regex . callback) in org-custom-cookies-alist
