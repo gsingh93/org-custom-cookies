@@ -58,12 +58,13 @@ There are five different functions that can be used for updating custom cookies:
 - `org-custom-cookies-update-subtree`: Updates any custom cookies found in the current heading and any child heading of the current heading
 - `org-custom-cookies-update-containing-subtree`: First finds the topmost parent heading that contains a custom cookie, and then updates all custom cookies in headings in that subtree. This is similar to `org-custom-cookies-update-nearest-heading`, except instead of stopping after finding the custom cookie, it 
 - `org-custom-cookies-update-all`: Updates all custom cookies in the buffer
+- `org-custom-cookies--update-cookie-ctrl-c-ctrl-c`: Updates cookies under cursor when for keybinding `C-c C-c`.
 
 It's recommended to play around with which one works best for your workflow (I personally prefer `org-custom-cookies-update-containing-subtree`), and bind this to a key. For convenience, using a prefix argument (`C-u`) with any of these will run `org-custom-cookies-update-all`.
 
 ### Keybindings and Hooks
 
-The `use-package` configuration below will `advise` `org-update-statistics-cookies` to run `org-custom-cookies-update-containing-subtree`, which will result in custom cookies being updated whenever built-in statistics cookie are updated, meaning that `C-c #` will also work with the custom cookies. It will also add hooks that will be run when you clock out, as well as when the "Effort" property is updated.
+The `use-package` configuration below will `advise` `org-update-statistics-cookies` to run `org-custom-cookies-update-containing-subtree`, which will result in custom cookies being updated whenever built-in statistics cookie are updated, meaning that `C-c #` will also work with the custom cookies. It then enables `C-c C-c` for updating custom cookies. Finally, it adds hooks that will be run when you clock out, as well as when the "Effort" property is updated.
 
 ```elisp
 (use-package org-custom-cookies
@@ -72,6 +73,7 @@ The `use-package` configuration below will `advise` `org-update-statistics-cooki
   :config
   (advice-add 'org-update-statistics-cookies :after 
 	  'org-custom-cookies-update-containing-subtree)
+  (add-hook 'org-ctrl-c-ctrl-c-hook 'org-custom-cookies--update-cookie-ctrl-c-ctrl-c)
   (add-hook 'org-clock-out-hook 'org-custom-cookies-update-containing-subtree)
   (add-hook 'org-property-changed-functions
             (lambda(name value)

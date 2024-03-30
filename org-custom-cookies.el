@@ -162,6 +162,16 @@ top-level heading."
   (cl-loop for (regex . callback) in org-custom-cookies-alist
            do (org-custom-cookies--update-current-heading-cookie regex callback)))
 
+(defun org-custom-cookies--update-cookie-ctrl-c-ctrl-c ()
+  "Update the custom cookie under the cursor using `org-ctrl-c-ctrl-c'.
+
+Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
+    (cl-loop for (regex . callback) in org-custom-cookies-alist
+             do (if (org-in-regexp regex)
+                    (progn
+                      (org-custom-cookies--update-nearest-heading-cookie regex callback)
+                      (cl-return 'updated-cookie)))))
+
 ;;;###autoload
 (defun org-custom-cookies-update-nearest-heading (&optional all)
   "Update all custom cookies for the nearest parent heading containing the cookie.
