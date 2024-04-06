@@ -70,12 +70,12 @@ The `use-package` configuration below will `advise` `org-update-statistics-cooki
 (use-package org-custom-cookies
   :ensure t
   :after org
+  :custom (org-custom-cookies-enable-cookie-face t)
   :config
   (advice-add 'org-update-statistics-cookies :after 
 	  'org-custom-cookies-update-containing-subtree)
   (add-hook 'org-ctrl-c-ctrl-c-hook 'org-custom-cookies--update-cookie-ctrl-c-ctrl-c)
   (add-hook 'org-clock-out-hook 'org-custom-cookies-update-containing-subtree)
-  (add-hook 'org-font-lock-set-keywords-hook 'org-custom-cookies--cookie-face-for-all-custom-cookies)
   (add-hook 'org-property-changed-functions
             (lambda(name value)
               (when (string-equal name "Effort")
