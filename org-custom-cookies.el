@@ -186,7 +186,7 @@ Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
 (defun org-custom-cookies--cookie-face-for-all-custom-cookies ()
   "Apply org cookie face on custom-org-cookies.
 
-Hook this function to `org-font-lock-set-keywords-hook' for it work."
+Set `org-custom-cookies-enable-cookie-face' to enable it."
   (cl-loop for (regex . callback) in org-custom-cookies-alist
            do (setq org-font-lock-extra-keywords
                     (append org-font-lock-extra-keywords
