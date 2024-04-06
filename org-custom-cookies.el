@@ -38,6 +38,17 @@
   :type '(alist :key-type string :value-type function)
   :group 'org-custom-cookies)
 
+(defcustom org-custom-cookies-enable-cookie-face nil
+  "Enable the use of the default face for cookies for custom cookies."
+  :set (lambda (var val)
+	 (set var val)
+	 (if val
+	     (add-hook 'org-font-lock-set-keywords-hook
+		       'org-custom-cookies--cookie-face-for-all-custom-cookies)
+	   (remove-hook 'org-font-lock-set-keywords-hook
+			'org-custom-cookies--cookie-face-for-all-custom-cookies)))
+  :type 'boolean :group 'org-custom-cookies)
+
 ;;;; Scheduled time custom cookie callback
 
 (defun org-custom-cookies--org-timestamp-string-to-duration-seconds (timestamp-string)
