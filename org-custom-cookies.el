@@ -177,11 +177,11 @@ top-level heading."
   "Update the custom cookie under the cursor using `org-ctrl-c-ctrl-c'.
 
 Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
-    (cl-loop for (regex . callback) in org-custom-cookies-alist
-             do (if (org-in-regexp regex)
-                    (progn
-                      (org-custom-cookies--update-nearest-heading-cookie regex callback)
-                      (cl-return 'updated-cookie)))))
+  (cl-loop for (regex . callback) in org-custom-cookies-alist
+           do (if (org-in-regexp regex)
+                  (progn
+                    (org-custom-cookies--update-nearest-heading-cookie regex callback)
+                    (cl-return 'updated-cookie)))))
 
 (defun org-custom-cookies--cookie-face-for-all-custom-cookies ()
   "Apply org cookie face on custom-org-cookies.
