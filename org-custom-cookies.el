@@ -38,6 +38,17 @@
   :type '(alist :key-type string :value-type function)
   :group 'org-custom-cookies)
 
+(defcustom org-custom-cookies-enable-cookie-face nil
+  "Enable the use of the default face for cookies for custom cookies."
+  :set (lambda (var val)
+         (set var val)
+         (if val
+             (add-hook 'org-font-lock-set-keywords-hook
+                       'org-custom-cookies--cookie-face-for-all-custom-cookies)
+           (remove-hook 'org-font-lock-set-keywords-hook
+                        'org-custom-cookies--cookie-face-for-all-custom-cookies)))
+  :type 'boolean :group 'org-custom-cookies)
+
 ;;;; Scheduled time custom cookie callback
 
 (defun org-custom-cookies--org-timestamp-string-to-duration-seconds (timestamp-string)
@@ -166,11 +177,20 @@ top-level heading."
   "Update the custom cookie under the cursor using `org-ctrl-c-ctrl-c'.
 
 Hook this function to `org-ctrl-c-ctrl-c-hook' for it to work."
-    (cl-loop for (regex . callback) in org-custom-cookies-alist
-             do (if (org-in-regexp regex)
-                    (progn
-                      (org-custom-cookies--update-nearest-heading-cookie regex callback)
-                      (cl-return 'updated-cookie)))))
+  (cl-loop for (regex . callback) in org-custom-cookies-alist
+           do (if (org-in-regexp regex)
+                  (progn
+                    (org-custom-cookies--update-nearest-heading-cookie regex callback)
+                    (cl-return 'updated-cookie)))))
+
+(defun org-custom-cookies--cookie-face-for-all-custom-cookies ()
+  "Apply org cookie face on custom-org-cookies.
+
+Set `org-custom-cookies-enable-cookie-face' to enable it."
+  (cl-loop for (regex . callback) in org-custom-cookies-alist
+           do (setq org-font-lock-extra-keywords
+                    (append org-font-lock-extra-keywords
+                            `((,regex (0 'org-checkbox-statistics-todo prepend)))))))
 
 ;;;###autoload
 (defun org-custom-cookies-update-nearest-heading (&optional all)

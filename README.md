@@ -64,12 +64,13 @@ It's recommended to play around with which one works best for your workflow (I p
 
 ### Keybindings and Hooks
 
-The `use-package` configuration below will `advise` `org-update-statistics-cookies` to run `org-custom-cookies-update-containing-subtree`, which will result in custom cookies being updated whenever built-in statistics cookie are updated, meaning that `C-c #` will also work with the custom cookies. It then enables `C-c C-c` for updating custom cookies. Finally, it adds hooks that will be run when you clock out, as well as when the "Effort" property is updated.
+The `use-package` configuration below will `advise` `org-update-statistics-cookies` to run `org-custom-cookies-update-containing-subtree`, which will result in custom cookies being updated whenever built-in statistics cookie are updated, meaning that `C-c #` will also work with the custom cookies. It then enables `C-c C-c` for updating custom cookies. Finally, it adds hooks that will be run when you clock out, as well as when the "Effort" property is updated. It will also make the org-custom-cookies use the default face for cookies.
 
 ```elisp
 (use-package org-custom-cookies
   :ensure t
   :after org
+  :custom (org-custom-cookies-enable-cookie-face t)
   :config
   (advice-add 'org-update-statistics-cookies :after 
 	  'org-custom-cookies-update-containing-subtree)
