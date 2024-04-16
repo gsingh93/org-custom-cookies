@@ -1,0 +1,17 @@
+name: Test
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install emacs
+        run: sudo apt update && sudo apt install -y emacs
+
+      - name: Install org
+        run: emacs -q --batch --eval "(progn (setq package-install-upgrade-built-in t) (package-install 'org t))"
+
+      - name: Run tests
+        run: ./run-tests.sh
