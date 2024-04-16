@@ -1,5 +1,7 @@
 ;;; test.el --- Tests for org-custom-cookies -*- lexical-binding: t -*-
 
+(load-file "../org-custom-cookies.el")
+
 (defmacro ert-deftest-matches-expected-file (testname testfile &rest body)
   "TODO"
   `(ert-deftest ,testname ()
